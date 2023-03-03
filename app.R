@@ -90,9 +90,7 @@ PercentileData <- WebData %>%
 
 # Define UI
 
-ui <- navbarPage(tags$head(tags$style(HTML('* {font-family: "Helvetica Neue"};'))),
-                 tags$head(tags$style(HTML("#dashboard{margin-bottom:200px;}"))),
-                 theme = shinytheme("paper"),
+ui <- navbarPage(theme = shinytheme("paper"),
                   title = "PitchWeb",
                   tabPanel("Web Plot",
                            sidebarPanel(
@@ -195,7 +193,8 @@ ui <- navbarPage(tags$head(tags$style(HTML('* {font-family: "Helvetica Neue"};')
                    tags$code("tidyverse"),
                    "packages."),
                  tags$p("This application was last updated in March 2023.")
-        )
+        ),
+        tags$head(tags$style(HTML('* {font-family: "Helvetica Neue"};')))
     )
 
 
