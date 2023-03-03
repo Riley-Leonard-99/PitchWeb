@@ -450,7 +450,7 @@ server <- function(input, output) {
         filter(full_name == input$playerDensity) %>%
         select(type, .data[[Variable]]) %>%
         rename(Type = type,
-               Percentile = 2)
+               `Percentile (Overall)` = 2)
       
       RidgeTableData <- left_join(RidgeSummaryData, LeagueAverageData, by = "Type")
       
