@@ -143,7 +143,7 @@ ui <- navbarPage(theme = shinytheme("paper"),
                  mainPanel(
                    plotOutput(outputId = "score_chart", height = 580, width = 650) %>% withSpinner(color="#0894fc"),
                    p("Note: The above visualization plots the Pitch Score of each pitch in the arsenal of the selected pitcher, with the dashed line representing the league average. The exact formula for the Pitch Score calculation can be found",
-                     tags$a("here.", href = "https://drive.google.com/file/d/1wrVJy_clddTIuZkgX6uRRENnzNdBumyV/view?usp=sharing", 
+                     tags$a("here.", href = "https://drive.google.com/file/d/1jD49TFntwXrrUufTgfvOz2Ci9RNFswNz/view?usp=sharing", 
                             target = "_blank")),
                    dataTableOutput(outputId = "score_summary_table"),
                    HTML("<br><br>"))
@@ -158,8 +158,9 @@ ui <- navbarPage(theme = shinytheme("paper"),
                  width = 3
                  ),
                  mainPanel(
-                   plotlyOutput(outputId = "arsenal_map", height = 650, width = 650) %>% withSpinner(color="#0894fc"))
-                 ),
+                   plotlyOutput(outputId = "arsenal_map", height = 650, width = 650) %>% withSpinner(color="#0894fc"),
+                 p("Note: The above visualization plots each pitcher by the overall Prevention Score and Whiff Score of their pitch arsenal. Players in the blue quadrant are above league average in both measures. Players in the red quadrant are below league average in both measures.")
+                 )),
         tabPanel("Density Plot",
                  sidebarPanel(
                    selectizeInput(inputId = "playerDensity",
@@ -339,9 +340,11 @@ server <- function(input, output) {
                            breaks = seq(0, 100, 25),
                            limits =c(0, 100)) +
         geom_rect(aes(xmin = 50, ymin = 50, xmax = 100, ymax = 100), 
-                  fill = "#0894fc", alpha = 0.2) +
+                  fill = "#0894fc", alpha = 0.2,
+                  hoverinfo = 'none') +
         geom_rect(aes(xmin = 0, ymin = 0, xmax = 50, ymax = 50), 
-                  fill = "palevioletred2", alpha = 0.2) +
+                  fill = "palevioletred2", alpha = 0.2,
+                  hoverinfo = 'none') +
         geom_point(data = ArsenalScore, 
                    aes(x = `Prevention Score`, 
                        y = `Whiff Score`,
@@ -400,6 +403,7 @@ server <- function(input, output) {
         geom_density_ridges(aes(fill = Type, color = Type), 
                             quantile_lines = TRUE,
                             quantiles = 2,
+                            quantile_fun = mean,
                             show.legend = FALSE,
                             size = 1,
                             scale = 1.5,
